@@ -8,11 +8,13 @@ excerpt_separator:  <!--more-->
 - SU클라우드 플랫폼 관리자를 이용하여 보다 쉽게 클라우드 이미지를 생성 할 수 있습니다
     - 각 버전별 CentOS, Ubuntu 등  인스턴스 생성
     - ssh로 VM 접속
+
         ```
         * 필요한 패키지 설치 및 초기 데이터 삭제
         rm -rf .ssh
         rm -rf /var/lib/cloud/instances/gncloud*
         ```
+        
     - 관리자에서 VM 정지
     - 이미지 > 스냅샷 > 정지된 VM 선택 > 스냅샷 생성
     - ssh로 kvm 호스트 터미널 오픈 (root 계정)
