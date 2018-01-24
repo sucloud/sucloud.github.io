@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://0.0.0.0:4000/" rel="alternate" type="text/html" /><updated>2018-01-23T23:43:36-06:00</updated><id>http://0.0.0.0:4000/</id><title type="html">SUSOFT</title><subtitle></subtitle><author><name>shjoo</name></author><entry><title type="html">SU클라우드 KVM이미지 제작방법</title><link href="http://0.0.0.0:4000/2018/01/23/hello-hydeout.html" rel="alternate" type="text/html" title="SU클라우드 KVM이미지 제작방법" /><published>2018-01-23T00:00:00-06:00</published><updated>2018-01-23T00:00:00-06:00</updated><id>http://0.0.0.0:4000/2018/01/23/hello-hydeout</id><content type="html" xml:base="http://0.0.0.0:4000/2018/01/23/hello-hydeout.html">&lt;h3 id=&quot;1-su클라우드-플랫폼-관리자&quot;&gt;1. SU클라우드 플랫폼 관리자&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;SU클라우드 플랫폼 관리자를 이용하여 보다 쉽게 클라우드 이미지를 생성 할 수 있습니다
+    &lt;ul&gt;
+      &lt;li&gt;각 버전별 CentOS, Ubuntu 등  인스턴스 생성&lt;/li&gt;
+      &lt;li&gt;ssh로 VM 접속
+  ```
+        &lt;ul&gt;
+          &lt;li&gt;필요한 패키지 설치 및 초기 데이터 삭제
+  rm -rf .ssh
+  rm -rf /var/lib/cloud/instances/gncloud*
+  ```&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;관리자에서 VM 정지&lt;/li&gt;
+      &lt;li&gt;이미지 &amp;gt; 스냅샷 &amp;gt; 정지된 VM 선택 &amp;gt; 스냅샷 생성&lt;/li&gt;
+      &lt;li&gt;ssh로 kvm 호스트 터미널 오픈 (root 계정)
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  # 이미지 변환 및 압축
+  $ cd /data/nas/images/kvm/snapshot
+  # 최근에 생성된 스냅샷 이미지 이름 확인
+  $ ls
+  $ qemu-img convert -f raw -O qcow2 [스냅샷 이름(.img)] [원하는 이미지 이름(.qcow2)]
+  $ virt-sparsify --compress [원하는 이미지 이름(.qcow2)] [압축된 이미지 이름.qcow2)]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li&gt;생성된 이미지를 /data/nas/images/kvm/base 로 이동&lt;/li&gt;
+      &lt;li&gt;SU클라우드 플랫폼 관리자에서 이미지 관리 &amp;gt; 등록 (이미지 이름과 같아야 한다)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;2-virt-manager&quot;&gt;2. virt-manager&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;libvirt를 통하여 kvm을 컨트롤 할 수 있으며, 세세한 부분 까지 세팅이 가능합니다.&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;설치를 원하는 OS의 ISO파일 다운로드&lt;/li&gt;
+      &lt;li&gt;virt-manager 실행&lt;/li&gt;
+      &lt;li&gt;파일 &amp;gt; 새 가상머신 &amp;gt; 로컬설치 매체 &amp;gt; ISO 파일 선택
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  # SU클라우드 플랫폼의 pool은 두곳의 디렉토리
+  /data/nas/images/kvm/instance
+  /var/lib/libvert/images
+  ISO 파일을 위의 디렉토리에 복사 또는 이동
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li&gt;virt-manager 화면에서 연결 하여 설치 마무리&lt;/li&gt;
+      &lt;li&gt;ssh로 vm에 접속
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  # 클라우드 이미지 사용을 위한 처리 (CentOS 7 기준)
+  # ubuntu 는 http://sweet-rain.tistory.com/m/37 참조
+
+  # 클라우드 생성 패키지 설치
+  yum -y install cloud-init
+
+  # root 계정으로 로그인 불가 설정
+  vi /etc/ssh/sshd_config
+  PasswordAuthentication no
+  PermitRootLogin no
+
+  # sudo 일때 비밀번호 입력 없이 사용 가능하도록 설정
+  vi /etc/sudoers
+  centos ALL=(ALL) NOPASSWD:ALL
+  # w! 로 저장 후 :q!, sudo 할 경우 비밀번호 없이 바로 수행 가능
+
+  # root 비밀번호 제거
+  passwd -d root
+
+  # cloud image 생성에 필요한 패키지 설치
+  yum -y update
+  yum -y install epel-release
+  yum -y groupinstall &quot;Development tools&quot;
+  yum -y install python-devel
+  yum -y install python-argparse python-psutil python-pip
+  pip install --upgrade pip
+  pip install 'boto==2.5.2' heat-cfntools
+  cfn-create-aws-symlinks --source /usr/local/bin
+  shutdown -h now
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li&gt;ssh로 kvm호스트 터미널 오픈 (root 계정)
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  # 이미지 변환 및 압축
+  $ cd /var/lib/libvirt/images
+  # 설치 시 지정한 파일 이름 확인
+  $ ls
+  $ virt-sparsify --compress [지정한 파일 이름(.qcow2)] [압축된 이미지 이름(.qcow2)]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li&gt;생성된 이미지를 /data/nas/images/kvm/base 로 이동&lt;/li&gt;
+      &lt;li&gt;SU클라우드 플랫폼 관리자에서 이미지 관리 &amp;gt; 등록 (이미지 이름과 같아야 한다)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;3-su클라우드-플랫폼이-아닌-리눅스-호스트-경우&quot;&gt;3. SU클라우드 플랫폼이 아닌 리눅스 호스트 경우&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;https://github.com/gncloud/gncloud/blob/master/Install/gncloud-kvm-host/README.md 참조&lt;/li&gt;
+  &lt;li&gt;virt-manager 설치
+    &lt;ul&gt;
+      &lt;li&gt;yum -y install virt-manager&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;virt-sparsify 설치
+    &lt;ul&gt;
+      &lt;li&gt;yum install libguestfs-tools&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>shjoo</name></author><summary type="html">1. SU클라우드 플랫폼 관리자 SU클라우드 플랫폼 관리자를 이용하여 보다 쉽게 클라우드 이미지를 생성 할 수 있습니다 각 버전별 CentOS, Ubuntu 등 인스턴스 생성 ssh로 VM 접속 ``` 필요한 패키지 설치 및 초기 데이터 삭제 rm -rf .ssh rm -rf /var/lib/cloud/instances/gncloud* ``` 관리자에서 VM 정지 이미지 &amp;gt; 스냅샷 &amp;gt; 정지된 VM 선택 &amp;gt; 스냅샷 생성 ssh로 kvm 호스트 터미널 오픈 (root 계정) # 이미지 변환 및 압축 $ cd /data/nas/images/kvm/snapshot # 최근에 생성된 스냅샷 이미지 이름 확인 $ ls $ qemu-img convert -f raw -O qcow2 [스냅샷 이름(.img)] [원하는 이미지 이름(.qcow2)] $ virt-sparsify --compress [원하는 이미지 이름(.qcow2)] [압축된 이미지 이름.qcow2)] 생성된 이미지를 /data/nas/images/kvm/base 로 이동 SU클라우드 플랫폼 관리자에서 이미지 관리 &amp;gt; 등록 (이미지 이름과 같아야 한다) 2. virt-manager libvirt를 통하여 kvm을 컨트롤 할 수 있으며, 세세한 부분 까지 세팅이 가능합니다. 설치를 원하는 OS의 ISO파일 다운로드 virt-manager 실행 파일 &amp;gt; 새 가상머신 &amp;gt; 로컬설치 매체 &amp;gt; ISO 파일 선택 # SU클라우드 플랫폼의 pool은 두곳의 디렉토리 /data/nas/images/kvm/instance /var/lib/libvert/images ISO 파일을 위의 디렉토리에 복사 또는 이동 virt-manager 화면에서 연결 하여 설치 마무리 ssh로 vm에 접속 # 클라우드 이미지 사용을 위한 처리 (CentOS 7 기준) # ubuntu 는 http://sweet-rain.tistory.com/m/37 참조 # 클라우드 생성 패키지 설치 yum -y install cloud-init # root 계정으로 로그인 불가 설정 vi /etc/ssh/sshd_config PasswordAuthentication no PermitRootLogin no # sudo 일때 비밀번호 입력 없이 사용 가능하도록 설정 vi /etc/sudoers centos ALL=(ALL) NOPASSWD:ALL # w! 로 저장 후 :q!, sudo 할 경우 비밀번호 없이 바로 수행 가능 # root 비밀번호 제거 passwd -d root # cloud image 생성에 필요한 패키지 설치 yum -y update yum -y install epel-release yum -y groupinstall &quot;Development tools&quot; yum -y install python-devel yum -y install python-argparse python-psutil python-pip pip install --upgrade pip pip install 'boto==2.5.2' heat-cfntools cfn-create-aws-symlinks --source /usr/local/bin shutdown -h now ssh로 kvm호스트 터미널 오픈 (root 계정) # 이미지 변환 및 압축 $ cd /var/lib/libvirt/images # 설치 시 지정한 파일 이름 확인 $ ls $ virt-sparsify --compress [지정한 파일 이름(.qcow2)] [압축된 이미지 이름(.qcow2)] 생성된 이미지를 /data/nas/images/kvm/base 로 이동 SU클라우드 플랫폼 관리자에서 이미지 관리 &amp;gt; 등록 (이미지 이름과 같아야 한다) 3. SU클라우드 플랫폼이 아닌 리눅스 호스트 경우 https://github.com/gncloud/gncloud/blob/master/Install/gncloud-kvm-host/README.md 참조 virt-manager 설치 yum -y install virt-manager virt-sparsify 설치 yum install libguestfs-tools</summary></entry></feed>
