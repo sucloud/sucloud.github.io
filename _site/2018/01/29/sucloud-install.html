@@ -11,7 +11,7 @@
 
   <title>
     
-      SU클라우드 KVM이미지 제작방법 &middot; SUSOFT
+      SU클라우드 ALL-in-one 설치 방법 &middot; SUSOFT
     
   </title>
 
@@ -219,124 +219,36 @@
 
     <main class="container">
       <header>
-  <h1 class="post-title">SU클라우드 KVM이미지 제작방법</h1>
+  <h1 class="post-title">SU클라우드 ALL-in-one 설치 방법</h1>
 </header>
 <div class="content">
   <div class="post-meta">
-  <span class="post-date">23 Jan 2018</span>
+  <span class="post-date">29 Jan 2018</span>
   <span class="post-categories">
     
   </span>
 </div>
 
   <div class="post-body">
-    <h3 id="1-su클라우드-플랫폼-관리자">1. SU클라우드 플랫폼 관리자</h3>
-<ul>
-  <li>SU클라우드 플랫폼 관리자를 이용하여 보다 쉽게 클라우드 이미지를 생성 할 수 있습니다
-    <ul>
-      <li>각 버전별 CentOS, Ubuntu 등  인스턴스 생성</li>
-      <li>ssh로 VM 접속
-  ```
-        <ul>
-          <li>필요한 패키지 설치 및 초기 데이터 삭제
-  rm -rf .ssh
-  rm -rf /var/lib/cloud/instances/gncloud*
-  ```</li>
-        </ul>
-      </li>
-      <li>관리자에서 VM 정지</li>
-      <li>이미지 &gt; 스냅샷 &gt; 정지된 VM 선택 &gt; 스냅샷 생성</li>
-      <li>ssh로 kvm 호스트 터미널 오픈 (root 계정)
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  # 이미지 변환 및 압축
-  $ cd /data/nas/images/kvm/snapshot
-  # 최근에 생성된 스냅샷 이미지 이름 확인
-  $ ls
-  $ qemu-img convert -f raw -O qcow2 [스냅샷 이름(.img)] [원하는 이미지 이름(.qcow2)]
-  $ virt-sparsify --compress [원하는 이미지 이름(.qcow2)] [압축된 이미지 이름.qcow2)]
-</code></pre></div>        </div>
-      </li>
-      <li>생성된 이미지를 /data/nas/images/kvm/base 로 이동</li>
-      <li>SU클라우드 플랫폼 관리자에서 이미지 관리 &gt; 등록 (이미지 이름과 같아야 한다)</li>
-    </ul>
-  </li>
-</ul>
-
-<h3 id="2-virt-manager">2. virt-manager</h3>
-<ul>
+    <ol>
   <li>
-    <p>libvirt를 통하여 kvm을 컨트롤 할 수 있으며, 세세한 부분 까지 세팅이 가능합니다.</p>
+    <p>원하는 디렉토리에 이동 후</p>
 
-    <ul>
-      <li>설치를 원하는 OS의 ISO파일 다운로드</li>
-      <li>virt-manager 실행</li>
-      <li>파일 &gt; 새 가상머신 &gt; 로컬설치 매체 &gt; ISO 파일 선택
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  # SU클라우드 플랫폼의 pool은 두곳의 디렉토리
-  /data/nas/images/kvm/instance
-  /var/lib/libvert/images
-  ISO 파일을 위의 디렉토리에 복사 또는 이동
-</code></pre></div>        </div>
-      </li>
-      <li>virt-manager 화면에서 연결 하여 설치 마무리</li>
-      <li>ssh로 vm에 접속
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  # 클라우드 이미지 사용을 위한 처리 (CentOS 7 기준)
-  # ubuntu 는 http://sweet-rain.tistory.com/m/37 참조
-
-  # 클라우드 생성 패키지 설치
-  yum -y install cloud-init
-
-  # root 계정으로 로그인 불가 설정
-  vi /etc/ssh/sshd_config
-  PasswordAuthentication no
-  PermitRootLogin no
-
-  # sudo 일때 비밀번호 입력 없이 사용 가능하도록 설정
-  vi /etc/sudoers
-  centos ALL=(ALL) NOPASSWD:ALL
-  # w! 로 저장 후 :q!, sudo 할 경우 비밀번호 없이 바로 수행 가능
-
-  # root 비밀번호 제거
-  passwd -d root
-
-  # cloud image 생성에 필요한 패키지 설치
-  yum -y update
-  yum -y install epel-release
-  yum -y groupinstall "Development tools"
-  yum -y install python-devel
-  yum -y install python-argparse python-psutil python-pip
-  pip install --upgrade pip
-  pip install 'boto==2.5.2' heat-cfntools
-  cfn-create-aws-symlinks --source /usr/local/bin
-  shutdown -h now
-</code></pre></div>        </div>
-      </li>
-      <li>ssh로 kvm호스트 터미널 오픈 (root 계정)
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  # 이미지 변환 및 압축
-  $ cd /var/lib/libvirt/images
-  # 설치 시 지정한 파일 이름 확인
-  $ ls
-  $ virt-sparsify --compress [지정한 파일 이름(.qcow2)] [압축된 이미지 이름(.qcow2)]
-</code></pre></div>        </div>
-      </li>
-      <li>생성된 이미지를 /data/nas/images/kvm/base 로 이동</li>
-      <li>SU클라우드 플랫폼 관리자에서 이미지 관리 &gt; 등록 (이미지 이름과 같아야 한다)</li>
-    </ul>
+    <p><code class="highlighter-rouge">$git clone https://github.com/sucloud/sucloud-all-in-one.git</code></p>
   </li>
-</ul>
+  <li>
+    <p>다운로드 후 sucloud-all-in-one 디렉토리로 이동</p>
 
-<h3 id="3-su클라우드-플랫폼이-아닌-리눅스-호스트-경우">3. SU클라우드 플랫폼이 아닌 리눅스 호스트 경우</h3>
-<ul>
-  <li>https://github.com/gncloud/gncloud/blob/master/Install/gncloud-kvm-host/README.md 참조</li>
-  <li>virt-manager 설치
-    <ul>
-      <li>yum -y install virt-manager</li>
-    </ul>
+    <p><code class="highlighter-rouge">$cd ./sucloud-all-in-one</code></p>
+
+    <p><code class="highlighter-rouge">$chmod 777 install.sh</code></p>
+
+    <p><code class="highlighter-rouge">./install.sh</code></p>
   </li>
-  <li>virt-sparsify 설치
-    <ul>
-      <li>yum install libguestfs-tools</li>
-    </ul>
+  <li>
+    <p>설치가 완료되면 자동으로 재부팅이 된 후 sucloud가 실행 되어 있을 것이다.</p>
   </li>
-</ul>
+</ol>
 
     
 
@@ -368,6 +280,15 @@
   <section class="related">
   <h2>Related Posts</h2>
   <ul class="posts-list">
+    
+      <li>
+        <h3>
+          <a href="/2018/01/23/makeimage.html">
+            SU클라우드 KVM이미지 제작방법
+            <small>23 Jan 2018</small>
+          </a>
+        </h3>
+      </li>
     
   </ul>
 </section>
