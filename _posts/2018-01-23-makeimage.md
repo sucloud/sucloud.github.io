@@ -1,7 +1,8 @@
 ---
 layout: post
 title: SU클라우드 KVM이미지 제작방법
-excerpt_separator:  <!--more-->
+summary: sucloud kvm images
+featured-img: 
 ---
 
 ### 1. SU클라우드 플랫폼 관리자

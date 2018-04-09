@@ -1,16 +1,47 @@
-<!DOCTYPE html>
-<html lang="en-us">
+---
+layout: compress
+---
+<html lang="{{ page.lang | default: site.lang | default: "en_US" }}">
 
   {% include head.html %}
 
-  <body class="{{ page.layout }}{% if page.url == '/' %} home{% endif %}">
+  <body class="site">
 
-    {% include sidebar.html %}
+    {% if site.google_tag_manager %}
 
-    <main class="container">
-      {{ content }}
+      <!-- Google Tag Manager (noscript) -->
+      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ site.google_tag_manager }}"
+      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+      <!-- End Google Tag Manager (noscript) -->
+
+    {% endif %}
+
+    {% include header.html %}
+
+    <div class="hero lazyload" data-bg="{{site.url}}/assets/img/posts/main-banner.jpg">
+      <div class="hero__wrap">
+        <h1 class="hero__title">Sucloud</h1>
+        <p class="hero__meta">클라우드의 시작은 Sucloud와 함꼐</p>
+      </div>
+    </div>
+
+    <main class="site__content">
+      <section class="blog">
+        <div class="container">
+          <div class="post-list" itemscope="" itemtype="http://schema.org/Blog">
+
+            {% for post in site.posts %}
+              {% include card.html %}
+            {% endfor %}
+
+            <!-- {% include pagination.html %} -->
+          </div>
+        </div>
+      </section>
     </main>
 
-    {% include custom-foot.html %}
+    {% include footer.html %}
+
   </body>
+
 </html>

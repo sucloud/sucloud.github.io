@@ -1,37 +1,50 @@
-# Dependencies
-markdown:         kramdown
-highlighter:      rouge
+title: Sucloud # your site title
+author: shjoo
+email: shjoo@linux.co.kr # email for form submission, you also have to change it in _js/scripts.js
+description: > # this means to ignore newlines until "baseurl:"
+  Write an awesome description for your new site here. You can edit this
+  line in _config.yml. It will appear in your document head meta (for
+  Google search results) and in your feed.xml site description.
+baseurl: "/" # the subpath of your site, e.g. /blog
+url: "http://sucloud.kr" # the base hostname & protocol for your site, e.g. http://example.com
+twitter_username: "" # replace with your_twitter_username or comment to remove link from footer
+github_username:  jshyoung90 # replace with your_github_username or comment to remove link from footer
+instagram_username: "" # replace with your_instagram_username or comment to remove link from footer
+social:
+  name: shjoo
+  links:
+    # - https://twitter.com/BenBalter
+    # - https://www.facebook.com/ben.balter
+    # - https://www.linkedin.com/in/BenBalter
+    # - https://plus.google.com/+BenBalter
+    - https://github.com/sucloud
+    # - https://keybase.io/benbalter
 
-# Setup
-title:            SUSOFT
-tagline:          ''
-description:      ''
-url:              ""
-baseurl:          # the optional subpath of your site, e.g. "/blog"
-                  # NB: This applies to all pages in your Jekyll site.
-                  # If you want to move just the blog index pages but keep
-                  # other pages at root, see the paginate_path and
-                  # sidebar_blog_link below.
+disqus:
+  shortname: janczizikow # to enable comments replace with your_disqus_shortname
 
-author:
-  name:           'shjoo'
-  url:            ""
+# Build settings
+markdown: kramdown
+highlighter: rouge # or pygments or null
+theme: jekyll-sleek
+exclude:
+  - README.md
+  - node_modules
+  - package.json
+  - package-lock.json
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - npm-debug.log
+  - gulpfile.js
+  - sleek.png
 
-paginate:         5
-# paginate_path:    '/page:num'
-                    # Or '/blog/page:num' if you want to move your index pages
+include: ['_pages']
+permalink: /:title/
+
+compress_html:
+  clippings: all
 
 plugins:
-  - jekyll-feed
-  - jekyll-gist
-  - jekyll-paginate
-
-# Custom vars
-version:            3.5.3
-sidebar_home_link:  true
-# sidebar_blog_link:  '/blog'   # By default, your home page is your blog
-                                # page. If you change your paginate_path,
-                                # set this to the root of the paginate_path
-                                # to enable a separate blog link.
-github:
-  repo:             https://github.com/sucloud
+  - jekyll-sitemap
+  - jekyll-seo-tag
