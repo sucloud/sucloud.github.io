@@ -277,6 +277,51 @@ sucloud 플랫폼에 대한 정보입니다.
 
 8. 설정
 
-```
- 작성 에정
-```
+![Alt text](/assets/img/posts/sucloud-root-system-setting.png)
+
+대부분의 기능을 설정 할 수 있는 공간입니다. 
+
+ * 과금
+
+ ![Alt text](/assets/img/posts/sucloud-root-system-setting-invoice.png)
+
+> 인스턴스 사용량의 요금 관리 기준입니다. (사용할 수 없음)
+
+* 백업
+
+![Alt text](/assets/img/posts/sucloud-root-system-setting-backupweek.png)
+
+> 자동 백업 주기를 설정 할 수 있다. 일별 및 요일별, 백업 보존기간등을 설정한다. 
+
+* 공인아이피 연결설정
+
+![Alt text](/assets/img/posts/sucloud-root-system-setting-ipset.png)
+
+> Public IP를 설정 하기 위해서 선행 되어야하는 설정입니다. IP 대역 (ex]192.168.0) 처럼 셋팅을 해줘야합니다.
+> Gateway나 Subnetmask는 맞게 설정하면 됩니다.
+
+* 포트 포워딩 설정
+
+![Alt text](/assets/img/posts/sucloud-root-system-setting-portdomain.png)
+
+> Sucloud가 연결되어있는 IP나 도메인 주소를 입력하면 된다. 
+> 입력시 인스턴스 상세페이지에서 연결된 도메인 주소가 나온다.
+
+* 서브 도메인 설정
+
+![Alt text](/assets/img/posts/sucloud-root-system-setting-subdomain.png)
+
+> 도메인이 연결되어 있다면 서브도메인으로 인스턴스를 연결해서 사용할 수 있다. 단, sucloud IP가 *.domain 으로 연결이 되어있어야한다.
+> ex] [subdomain].domain주소
+
+* 모니터링 주기 설정
+
+![Alt text](/assets/img/posts/sucloud-root-system-setting-matric.png)
+
+> 인스턴스들의 상태 모니터링 주기를 설정 할 수 있습니다. 기본 초단위로 설정 할 수 있으면 기본 세팅은 1분입니다.
+
+* Slack 봇 설정
+
+![Alt text](/assets/img/posts/sucloud-root-system-setting-slack.png)
+
+> 인스턴스 생성, 실패 등 모든 에러를 슬랙봇 알람으로 받을 수 있게 설정 됩니다. 기본으로는 저희 유지 보수를 위해 씁니다. 하지만 슬랙을 사용하고 알림을 받고 싶으면 설정이 가능합니다.
