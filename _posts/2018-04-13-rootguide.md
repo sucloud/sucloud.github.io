@@ -213,3 +213,70 @@ sucloud 플랫폼에 대한 정보입니다.
 2. 시스템 팀관리 
 
 ![Alt text](/assets/img/posts/sucloud-root-system-team.png)
+
+관리자에서 모든 팀을 볼 수 있습니다. 
+팀명, 팀 관리자, 팀원이 몇명인지 표시됩니다.
+리소스는 현재 사용중인 인스턴스에 대하여 나타냅니다.
+
+![Alt text](/assets/img/posts/sucloud-root-system-team-info1.png)
+
+팀에 관련하여 모든 정보가 표시됩니다. 사용중인 리소스 및 팀에 할당 되어있는 리소스를 수정 할 수 있습니다. (팀명 수정 및 리소스 제한 가능)
+
+
+![Alt text](/assets/img/posts/sucloud-root-system-team-info2.png)
+
+팀원들의 상태 리스트를 표시합니다. 팀원들의 등급, 비밀번호, 탈퇴 를 기능이 있습니다.
+
+팀을 완전히 삭제가 가능하며 팀 삭제 시 팀에 연관된 모든 정보 및 인스턴스, 백업 데이터 등은 모두 삭제되어 없어지기 때문에 삭제시 신중해야합니다.
+
+3. 클러스터 관리
+
+![Alt text](/assets/img/posts/sucloud-root-system-cluster.png)
+
+호스트를 연결 할 수 있습니다. 일반적으로 ALL-in-one 모델 일 경우 컨트롤러와 노드의 IP는 동일합니다. 노드는 여러개로 추가가능 합니다.
+
+4. 이미지 관리
+
+![Alt text](/assets/img/posts/sucloud-root-system-img.png)
+
+등록되어있는 이미지들을 보여줍니다. 가상머신 이미지와 컨테이너 이미지를 등록 또는 삭제 할 수 있습니다. 삭제시 이미지에 연결되어 있는 이미지 파일을 삭제 또는 데이터베이스에서만 삭제 할 수 있도록 선택할 수 있습니다.
+
+![Alt text](/assets/img/posts/sucloud-root-system-img-add.png)
+
+이미지 등록 화면입니다. (파일 선택은 사용 불가)
+
+타입은 Hyper-v 인지 KVM 인지 선택을 해줘야합니다. (Hyper-v 와 KVM은 기본적으로 파일 확장자가 다릅니다.)
+
+이름은 원하시는 이름을 적어주시면 되고, OS는 저희가 제공하는 이미지에 이름이 있는데 **Centos 기반이면 centos, 우분투 기반이면 Ubuntu를 입력해 주셔야합니다.**
+
+버전과 비트는 이미지에 맞게 입력하시면 되고, 비트는 이미지에 표시 되어있지 않으면 64비트를 기본으로 합니다.
+
+파일명은 현재 베이스 이미지가 연결되어있는곳에 있는 파일을 나타내주며 연결하실 이미지를 선택하시면 됩니다.
+
+5. 리소스 단위 관리
+
+![Alt text](/assets/img/posts/sucloud-root-system-resource.png)
+
+인스턴스 생성 시 리소스 단위를 등록하는 곳이다. 코어, 메모리 및 디스크 용량을 설정 할 수 있으며 삭제 할 수 도있다. 최대 코어, 메모리, 디스크 제한은 없으나 호스트의 스펙에 따라 적절히 사용하는 것을 추천한다.
+
+6. 로그인 이력 조회 및 사용 이력 조회
+
+![Alt text](/assets/img/posts/sucloud-root-system-loginhis.png)
+
+로그인 이력을 조회 할 수 있다.
+
+![Alt text](/assets/img/posts/sucloud-root-system-usehis.png)
+
+인스턴스 생성 내역 등 사용자의 사용내역을 조회 할 수 있다.
+
+7. 백업 및 장애 현황
+
+![Alt text](/assets/img/posts/sucloud-root-system-backup.png)
+
+전체 팀의 백업 현황과 장애를 확인 할 수 있는 페이지이다.
+
+8. 설정
+
+```
+ 작성 에정
+```
