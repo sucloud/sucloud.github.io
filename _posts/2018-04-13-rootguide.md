@@ -101,6 +101,115 @@ DISK : 인스턴스의 Diks 사용량을 1분단위로 표시합니다.
 
 ``` 
 
+``` 인스턴스 이름 수정 ```
+
+![Alt text](/assets/img/posts/sucloud-root-instancelist-detail-name.png)
+
+인스턴스의 이름을 바꾸고 싶을 경우 인스턴스 상세페이지에서 인스턴스 이름을 클릭하거나 인스턴스 이름 옆에 있는 연필 아이콘을 클릭하면 모달 창에서 수정가능합니다.
+
+``` 인스턴스 태그 수정 ```
+
+![Alt text](/assets/img/posts/sucloud-root-instancelist-detail-tag.png)
+
+인스턴스의 태그을 바꾸고 싶을 경우 인스턴스 상세페이지에서 인스턴스 태그를 클릭하거나 인스턴스 태그 왼쪽에 연필 아이콘을 클릭하면 모달 창에서 수정가능합니다.
+
+![Alt text](/assets/img/posts/sucloud-instancelist-detail-ip.png)
+
+IP설정 버튼을 클릭 할 시 나오는 모달 창입니다. (시스템 설정에서 IP제외 게이트웨이 IP 대역, 및 서브넷마스크가 설정이 되어있어야합니다.)
+원하는 아이피를 넣거나 *AUTO*를 넣어주시면 됩니다. AUTO 셋팅시 같은 대역대의 비어있는 제일 작은수의 IP가 설정 됩니다.
 
 
+``` 인스턴스 그룹 수정 ```
 
+![Alt text](/assets/img/posts/sucloud-root-instancelist-group.png)
+
+보여지는 그룹을 클릭 할 시 수정할 수 있는 모달이 나옵니다. 팀내에 있는 그룹 어디든지 옮겨 놓을 수 있습니다.
+
+``` 인스턴스 포트포워딩 ```
+
+![Alt text](/assets/img/posts/sucloud-root-instancelist-detail-port.png)
+
+인스턴스에 접속할 수 있거나 웹페이지에 연결 가능하도록 하는 포트포워드 기능입니다.
+처음에 CUSTOM 이나 RDP, HTTP, SSH의 설정을 기본적으로 제공하고있으며 자신이 원하는 원본포트를 적어 사용할 수 있습니다.
+
+원본포트는 인스턴스에서 열 포트이고 외부포트는 호스트에 열 포트입니다. 기본적으로 AUTO로 설정 되어있으나 자기가 원하는 포트로 설정 할 수 있습니다 (3306, 443 등 기본적으로 안되는 포트 존재) 타임아웃은 그 시간동안 아무 입력이 없으면 자동적으로 연결을 끊어버리게 되어있습니다.(7200초를 추천 드립니다.)
+
+### 5. 이미지 
+
+1. Virtual Machine
+
+![Alt text](/assets/img/posts/sucloud-root-instancelist-img.png)
+
+호스트에 생성이 가능한 이미지를 표시해줍니다. (Hyper-v 또는 KVM)
+
+2. Snapshot
+
+![Alt text](/assets/img/posts/sucloud-root-instancelist-snap.png)
+
+인스턴스들의 스냅샷을 찍을 수 있는 페이지입니다. 해당아이디의 소유자만 인스턴스를 만들 수 있고 팀내의 팀장이 모든 인스턴스들의 권한을 가질 수 있습니다. (관리자 불가)
+
+또한, SnapShot List 에서는 인스턴스 스냅샷에 대한 정보를 확인 할 수 있습니다.
+
+3. BackupList
+
+![Alt text](/assets/img/posts/sucloud-root-instancelist-backup.png)
+
+팀내의 인스턴스에 대한 백업 정보입니다. 백업한 날짜와 시간 및 인스턴스 이름 소유자만 표시합니다.
+삭제는 기본 인스턴스 백업 정책에 따라 삭제가 되며 임의로 삭제 하실 수 없습니다.
+
+
+### 6. 관리자 계정 관리
+
+
+![Alt text](/assets/img/posts/sucloud-root-account.png)
+
+header 부분의 오른쪽 이름을 클릭하시면 dropdown 형태로 계정에 대한 정보가 보입니다.
+
+```
+ 첫 줄 : 계정의 이름이 보입니다.
+ 
+ My team : 계정이 속해 있는 팀에 대한 정보 및 SSH키를 다운로드 할 수 있습니다.
+
+ Account Setting : 계정에 대한 비밀번호, 연락처, 이메일등을 수정 가능합니다.
+
+ Logout :  보인 그대로의 기능
+
+```
+
+1. 팀 관련 정보 및 RDCMan 파일 다운로드 
+
+![Alt text](/assets/img/posts/sucloud-root-account-myteam.png)
+
+계정이 속한 팀에 대한 정보를 보여주며 팀원들, 팀 인스턴스 그룹을 보여줍니다. 
+마지막으로 Hyper-v을 사용 하실 경우에는 접속을 위한 rdg 파일을 다운로드 받을 수 있습니다. 
+* RDG 파일은 원격접속을 위한 파일이며 팀내에 위치한 모든 Hyper-v 인스턴스들이 그룹별로 묶여 접속정보들을 저장한 파일입니다.
+
+2. 계정이 속한 팀 정보 및 SSH키 리스트
+
+![Alt text](/assets/img/posts/sucloud-root-account-myinfo.png)
+
+계정 이름과 아이디 및 연락처를 확인 할 수 있습니다. 수정을 누를 경우 계정에 대한 정보를 수정할 수 있습니다.
+또한, SSH키를 다운로드 받을 수 있습니다.
+
+![Alt text](/assets/img/posts/sucloud-root-account-myinfo-change.png)
+
+아이디와 이름을 제외한 모든 것을 수정 할 수 있습니다.
+
+ 
+### 7. 시스템 설정
+
+1. 시스템 프로필
+
+![Alt text](/assets/img/posts/sucloud-root-system-profile.png)
+
+```
+sucloud 플랫폼에 대한 정보입니다.
+
+1번 박스는 최신버전으로 업데이트 할 수 있는 버튼입니다.
+
+2번 박스는 제품등록을 위한 곳입니다. 제품등록이 안되어있을 경우 나타납니다.
+
+```
+2. 시스템 팀관리 
+
+![Alt text](/assets/img/posts/sucloud-root-system-team.png)
