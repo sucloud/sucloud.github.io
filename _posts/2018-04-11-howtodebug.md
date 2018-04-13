@@ -10,7 +10,6 @@ featured-img: emile-perron-190221
 
  1. sucloud platform 시작 및 중지 재시작.
 
-    ![Alt text](/assets/img/posts/sucloud-log.png)
     - 본인이 sucloud-all-in-one을 설치 하였다면 $/root/sucloud-all-in-one/ 에 이동한 후
       docker-compose up -d : 시작
       docker-comppse down : 정지  할 수 있다.
@@ -19,6 +18,7 @@ featured-img: emile-perron-190221
 
 2. sucloud logger 위치 및 확인
 
+    ![Alt text](/assets/img/posts/sucloud-log.png)
     ![Alt text](/assets/img/posts/sucloud-log-all.png)
     - 기본적으로 /var/log/sucloud2 또는 /var/log/sucloud에서 확인 할 수 있다. 
     DownloadFileManager.log, down.log, k.log, manager.log, d.log, h.log, kvm.log, s.log, docker.log,
@@ -37,4 +37,3 @@ featured-img: emile-perron-190221
     ![Alt text](/assets/img/posts/sucloud-port-docker.png)
     - docker logs -f [docker ID or docker NAME] 을 하면 포트포워딩하는 모든 레벨의 로그들을 볼 수있다. 혹 에러가 있다면 빨간줄과 같이 쉽게 확인이 가능 할 것이다.
 
-    
